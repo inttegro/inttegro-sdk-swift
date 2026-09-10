@@ -49,6 +49,26 @@ final class PublicAPITests: XCTestCase {
         XCTAssertEqual(intent.merchant?.organizationName, "Tea House Ltd")
         XCTAssertEqual(intent.product?.dimensions?.digital?.bytes, 1_024)
         XCTAssertEqual(intent.usage.order?.id, "or_123")
+        XCTAssertTrue(intent.isSingleUse)
+        XCTAssertEqual(intent.usedOrderID, "or_123")
+    }
+
+    func testResourceSemanticsAnswerLocalQuestions() throws {
+        let paymentData = Data(#"{"amount":{"currency":"ghs","value":1000},"id":"py_123","initiated_at":"2026-09-09T12:00:00Z","next_action":{"type":"redirect"},"statement_descriptor":"INTTEGRO","status":"requires_action"}"#.utf8)
+        let payment = try JSONDecoder.inttegro.decode(Payment.self, from: paymentData)
+        XCTAssertTrue(payment.requiresAction)
+        XCTAssertFalse(payment.isTerminal)
+        XCTAssertEqual(payment.requiredAction?.type, .redirect)
+
+        let productData = Data(#"{"active":true,"created_at":"2026-09-09T12:00:00Z","id":"prod_123","name":"Tea guide","published_at":"2026-09-09T12:00:00Z","type":"digital"}"#.utf8)
+        let product = try JSONDecoder.inttegro.decode(Product.self, from: productData)
+        XCTAssertTrue(product.isPublished)
+        XCTAssertTrue(product.wasEverPublished)
+
+        let methodData = Data(#"{"active":true,"created_at":"2026-09-09T12:00:00Z","customer_id":"cu_123","id":"pm_123","type":"mobile_money","verified_at":"2026-09-09T12:00:00Z"}"#.utf8)
+        let method = try JSONDecoder.inttegro.decode(PaymentMethod.self, from: methodData)
+        XCTAssertTrue(method.isVerified)
+        XCTAssertTrue(method.isReusable)
     }
 
     func testWireEnvelopeIsUnwrappedIntoDomainValue() async throws {
