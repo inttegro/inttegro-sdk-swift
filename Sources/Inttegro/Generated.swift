@@ -493,17 +493,6 @@ public struct ProductType: RawRepresentable, Codable, Hashable, Sendable {
     public static let cause = Self(rawValue: "cause")
 }
 
-/// A typed `PurchaseIntentActivityType` value used by the Inttegro API.
-public struct PurchaseIntentActivityType: RawRepresentable, Codable, Hashable, Sendable {
-    public let rawValue: String
-    public init(rawValue: String) { self.rawValue = rawValue }
-    public static let expiredViewed = Self(rawValue: "expired_viewed")
-    public static let orderCreated = Self(rawValue: "order_created")
-    public static let paymentFailed = Self(rawValue: "payment_failed")
-    public static let paymentStarted = Self(rawValue: "payment_started")
-    public static let viewed = Self(rawValue: "viewed")
-}
-
 /// A typed `PurchaseIntentStatus` value used by the Inttegro API.
 public struct PurchaseIntentStatus: RawRepresentable, Codable, Hashable, Sendable {
     public let rawValue: String
@@ -8637,17 +8626,27 @@ public struct PayoutSettingsLookupScheduleAgingSpec: Codable, Sendable, Equatabl
 /// Typed Inttegro domain value.
 public struct PayoutSettingsMutation: Codable, Sendable, Equatable {
     public var destinations: PayoutDestinations?
+    public var fxEnabled: Bool?
     public var id: String?
     public var schedule: PayoutSettingsMutationSchedule?
 
     public init(
         destinations: PayoutDestinations? = nil,
+        fxEnabled: Bool? = nil,
         id: String? = nil,
         schedule: PayoutSettingsMutationSchedule? = nil
     ) {
         self.destinations = destinations
+        self.fxEnabled = fxEnabled
         self.id = id
         self.schedule = schedule
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case destinations
+        case fxEnabled = "fx_enabled"
+        case id
+        case schedule
     }
 }
 
@@ -9507,7 +9506,6 @@ public struct PublicFileStorage: Codable, Sendable, Equatable {
 
 /// Typed Inttegro domain value.
 public struct PurchaseIntent: Codable, Sendable, Equatable {
-    public var activity: PurchaseIntentActivityLog?
     public var allowVariants: Bool
     public var createdAt: Date
     public var expiresAt: Date?
@@ -9523,7 +9521,6 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
     public var variantSet: PurchaseIntentVariantSet?
 
     public init(
-        activity: PurchaseIntentActivityLog? = nil,
         allowVariants: Bool,
         createdAt: Date,
         expiresAt: Date? = nil,
@@ -9538,7 +9535,6 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
         usage: PurchaseIntentUsage,
         variantSet: PurchaseIntentVariantSet? = nil
     ) {
-        self.activity = activity
         self.allowVariants = allowVariants
         self.createdAt = createdAt
         self.expiresAt = expiresAt
@@ -9555,7 +9551,6 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case activity
         case allowVariants = "allow_variants"
         case createdAt = "created_at"
         case expiresAt = "expires_at"
@@ -9569,186 +9564,6 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
         case updatedAt = "updated_at"
         case usage
         case variantSet = "variant_set"
-    }
-}
-
-/// Typed Inttegro domain value.
-public struct PurchaseIntentActivityLog: Codable, Sendable, Equatable {
-    public var recent: [PurchaseIntentActivity]?
-
-    public init(
-        recent: [PurchaseIntentActivity]? = nil
-    ) {
-        self.recent = recent
-    }
-}
-
-/// Typed Inttegro domain value.
-public struct PurchaseIntentActivity: Codable, Sendable, Equatable {
-    public var amount: Amount?
-    public var attribution: PurchaseIntentActivityAttribution?
-    public var createdAt: Date
-    public var errorCode: String?
-    public var id: String
-    public var orderId: String?
-    public var paymentId: String?
-    public var productId: String?
-    public var purchaseIntentId: String
-    public var quantity: Int?
-    public var source: String?
-    public var type: PurchaseIntentActivityType
-    public var variantProductId: String?
-    public var visitor: PurchaseIntentActivityVisitor?
-
-    public init(
-        amount: Amount? = nil,
-        attribution: PurchaseIntentActivityAttribution? = nil,
-        createdAt: Date,
-        errorCode: String? = nil,
-        id: String,
-        orderId: String? = nil,
-        paymentId: String? = nil,
-        productId: String? = nil,
-        purchaseIntentId: String,
-        quantity: Int? = nil,
-        source: String? = nil,
-        type: PurchaseIntentActivityType,
-        variantProductId: String? = nil,
-        visitor: PurchaseIntentActivityVisitor? = nil
-    ) {
-        self.amount = amount
-        self.attribution = attribution
-        self.createdAt = createdAt
-        self.errorCode = errorCode
-        self.id = id
-        self.orderId = orderId
-        self.paymentId = paymentId
-        self.productId = productId
-        self.purchaseIntentId = purchaseIntentId
-        self.quantity = quantity
-        self.source = source
-        self.type = type
-        self.variantProductId = variantProductId
-        self.visitor = visitor
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case amount
-        case attribution
-        case createdAt = "created_at"
-        case errorCode = "error_code"
-        case id
-        case orderId = "order_id"
-        case paymentId = "payment_id"
-        case productId = "product_id"
-        case purchaseIntentId = "purchase_intent_id"
-        case quantity
-        case source
-        case type
-        case variantProductId = "variant_product_id"
-        case visitor
-    }
-}
-
-/// Typed Inttegro domain value.
-public struct PurchaseIntentActivityAttribution: Codable, Sendable, Equatable {
-    public var campaign: String?
-    public var channel: String?
-    public var content: String?
-    public var landingUrl: String?
-    public var medium: String?
-    public var referrer: String?
-    public var referrerHost: String?
-    public var source: String?
-    public var term: String?
-
-    public init(
-        campaign: String? = nil,
-        channel: String? = nil,
-        content: String? = nil,
-        landingUrl: String? = nil,
-        medium: String? = nil,
-        referrer: String? = nil,
-        referrerHost: String? = nil,
-        source: String? = nil,
-        term: String? = nil
-    ) {
-        self.campaign = campaign
-        self.channel = channel
-        self.content = content
-        self.landingUrl = landingUrl
-        self.medium = medium
-        self.referrer = referrer
-        self.referrerHost = referrerHost
-        self.source = source
-        self.term = term
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case campaign
-        case channel
-        case content
-        case landingUrl = "landing_url"
-        case medium
-        case referrer
-        case referrerHost = "referrer_host"
-        case source
-        case term
-    }
-}
-
-/// Typed Inttegro domain value.
-public struct PurchaseIntentActivityVisitor: Codable, Sendable, Equatable {
-    public var browser: String?
-    public var city: String?
-    public var country: String?
-    public var device: String?
-    public var ipAddress: String?
-    public var os: String?
-    public var region: String?
-    public var sessionId: String?
-    public var timezone: String?
-    public var userAgent: String?
-    public var visitorId: String?
-
-    public init(
-        browser: String? = nil,
-        city: String? = nil,
-        country: String? = nil,
-        device: String? = nil,
-        ipAddress: String? = nil,
-        os: String? = nil,
-        region: String? = nil,
-        sessionId: String? = nil,
-        timezone: String? = nil,
-        userAgent: String? = nil,
-        visitorId: String? = nil
-    ) {
-        self.browser = browser
-        self.city = city
-        self.country = country
-        self.device = device
-        self.ipAddress = ipAddress
-        self.os = os
-        self.region = region
-        self.sessionId = sessionId
-        self.timezone = timezone
-        self.userAgent = userAgent
-        self.visitorId = visitorId
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case browser
-        case city
-        case country
-        case device
-        case ipAddress = "ip_address"
-        case os
-        case region
-        case sessionId = "session_id"
-        case timezone
-        case userAgent = "user_agent"
-        case visitorId = "visitor_id"
     }
 }
 

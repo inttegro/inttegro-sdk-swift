@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0
+
+- Breaking: replaced payout dictionaries and generic payloads with named
+  request, response, settings, page, error, and destination models.
+- Made `ghs` the explicit supported payout-destination property and exposed
+  payout timestamps as `Date` values.
+- Added fluent resource semantics and removed server-internal purchase-intent
+  activity response models.
+
 ## 0.2.0
 
 - Breaking: replaced generic dictionaries with named models for balances, purchase intents, products, payment methods, payments, and orders.
