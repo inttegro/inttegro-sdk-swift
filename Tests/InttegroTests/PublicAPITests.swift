@@ -60,6 +60,23 @@ final class PublicAPITests: XCTestCase {
         XCTAssertEqual(settings.fxEnabled, true)
     }
 
+    func testRefundSettlementUsesTheDiscriminatorAndMaskedSnapshot() throws {
+        let data = Data(#"{"created_at":"2026-09-09T12:00:00Z","id":"rf_123","line_items":[],"order_id":"or_123","reason":"requested_by_customer","settlement":{"type":"payment_method","payment_method":{"id":"pm_123","type":"bank_account","bank_account":{"type":"ghana_bank_account","ghana_bank_account":{"account_number":"****1234","last4":"1234"}}}},"status":"pending","total":{"currency":"ghs","value":1000}}"#.utf8)
+        let refund = try JSONDecoder.inttegro.decode(Refund.self, from: data)
+
+        guard case .paymentMethod(let paymentMethod) = refund.settlement,
+              case .bankAccount(_, let bankAccount) = paymentMethod,
+              case .ghanaBankAccount(let ghanaBankAccount) = bankAccount else {
+            return XCTFail("Expected a bank-account payment-method settlement")
+        }
+        XCTAssertEqual(ghanaBankAccount.accountNumber, "****1234")
+
+        let invalidOffline = Data(#"{"type":"offline","payment_method":{"id":"pm_123","type":"mobile_money"}}"#.utf8)
+        XCTAssertThrowsError(try JSONDecoder.inttegro.decode(RefundSettlement.self, from: invalidOffline))
+        let missingMethod = Data(#"{"type":"payment_method"}"#.utf8)
+        XCTAssertThrowsError(try JSONDecoder.inttegro.decode(RefundSettlement.self, from: missingMethod))
+    }
+
     func testResourceSemanticsAnswerLocalQuestions() throws {
         let paymentData = Data(#"{"amount":{"currency":"ghs","value":1000},"id":"py_123","initiated_at":"2026-09-09T12:00:00Z","next_action":{"type":"redirect"},"statement_descriptor":"INTTEGRO","status":"requires_action"}"#.utf8)
         let payment = try JSONDecoder.inttegro.decode(Payment.self, from: paymentData)
