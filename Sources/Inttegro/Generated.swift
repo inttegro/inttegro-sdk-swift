@@ -9916,6 +9916,190 @@ public struct PurchaseIntentVariantSet: Codable, Sendable, Equatable {
     }
 }
 
+/// Immutable settlement evidence captured when a refund is created.
+public enum RefundSettlement: Codable, Sendable, Equatable {
+    case offline
+    case paymentMethod(RefundSettlementPaymentMethod)
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(String.self, forKey: .type)
+
+        switch type {
+        case "offline":
+            guard !container.contains(.paymentMethod) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .paymentMethod,
+                    in: container,
+                    debugDescription: "Offline settlements must not include a payment method"
+                )
+            }
+            self = .offline
+        case "payment_method":
+            self = .paymentMethod(
+                try container.decode(RefundSettlementPaymentMethod.self, forKey: .paymentMethod)
+            )
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Unsupported refund settlement type: \(type)"
+            )
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .offline:
+            try container.encode("offline", forKey: .type)
+        case .paymentMethod(let paymentMethod):
+            try container.encode("payment_method", forKey: .type)
+            try container.encode(paymentMethod, forKey: .paymentMethod)
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case paymentMethod = "payment_method"
+    }
+}
+
+/// A safe snapshot of the original payment method used for the order.
+public enum RefundSettlementPaymentMethod: Codable, Sendable, Equatable {
+    case mobileMoney(id: String, mobileMoney: RefundSettlementMobileMoney)
+    case bankAccount(id: String, bankAccount: RefundSettlementBankAccount)
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(String.self, forKey: .type)
+        let id = try container.decode(String.self, forKey: .id)
+
+        switch type {
+        case "mobile_money":
+            guard !container.contains(.bankAccount) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .bankAccount,
+                    in: container,
+                    debugDescription: "Mobile-money snapshots must not include bank-account details"
+                )
+            }
+            self = .mobileMoney(
+                id: id,
+                mobileMoney: try container.decode(RefundSettlementMobileMoney.self, forKey: .mobileMoney)
+            )
+        case "bank_account":
+            guard !container.contains(.mobileMoney) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .mobileMoney,
+                    in: container,
+                    debugDescription: "Bank-account snapshots must not include mobile-money details"
+                )
+            }
+            self = .bankAccount(
+                id: id,
+                bankAccount: try container.decode(RefundSettlementBankAccount.self, forKey: .bankAccount)
+            )
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Unsupported refund settlement payment-method type: \(type)"
+            )
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .mobileMoney(let id, let mobileMoney):
+            try container.encode("mobile_money", forKey: .type)
+            try container.encode(id, forKey: .id)
+            try container.encode(mobileMoney, forKey: .mobileMoney)
+        case .bankAccount(let id, let bankAccount):
+            try container.encode("bank_account", forKey: .type)
+            try container.encode(id, forKey: .id)
+            try container.encode(bankAccount, forKey: .bankAccount)
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case type
+        case mobileMoney = "mobile_money"
+        case bankAccount = "bank_account"
+    }
+}
+
+/// Safe mobile-money details retained in refund history.
+public struct RefundSettlementMobileMoney: Codable, Sendable, Equatable {
+    public var accountNumber: String
+    public var last4: String
+    public var network: MobileMoneyNetwork
+
+    public init(accountNumber: String, last4: String, network: MobileMoneyNetwork) {
+        self.accountNumber = accountNumber
+        self.last4 = last4
+        self.network = network
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case accountNumber = "account_number"
+        case last4
+        case network
+    }
+}
+
+/// Safe bank-account details retained in refund history.
+public enum RefundSettlementBankAccount: Codable, Sendable, Equatable {
+    case ghanaBankAccount(RefundSettlementGhanaBankAccount)
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(String.self, forKey: .type)
+        guard type == "ghana_bank_account" else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Unsupported refund settlement bank-account type: \(type)"
+            )
+        }
+        self = .ghanaBankAccount(
+            try container.decode(RefundSettlementGhanaBankAccount.self, forKey: .ghanaBankAccount)
+        )
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .ghanaBankAccount(let ghanaBankAccount):
+            try container.encode("ghana_bank_account", forKey: .type)
+            try container.encode(ghanaBankAccount, forKey: .ghanaBankAccount)
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case ghanaBankAccount = "ghana_bank_account"
+    }
+}
+
+/// Masked Ghana bank-account details retained in refund history.
+public struct RefundSettlementGhanaBankAccount: Codable, Sendable, Equatable {
+    public var accountNumber: String
+    public var last4: String
+
+    public init(accountNumber: String, last4: String) {
+        self.accountNumber = accountNumber
+        self.last4 = last4
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case accountNumber = "account_number"
+        case last4
+    }
+}
+
 /// Typed Inttegro domain value.
 public struct Refund: Codable, Sendable, Equatable {
     public var canceledAt: Date?
@@ -9929,6 +10113,7 @@ public struct Refund: Codable, Sendable, Equatable {
     public var reason: RefundReason
     public var reasonDetails: String?
     public var reference: String?
+    public var settlement: RefundSettlement
     public var status: RefundStatus
     public var succeededAt: Date?
     public var total: Amount
@@ -9945,6 +10130,7 @@ public struct Refund: Codable, Sendable, Equatable {
         reason: RefundReason,
         reasonDetails: String? = nil,
         reference: String? = nil,
+        settlement: RefundSettlement,
         status: RefundStatus,
         succeededAt: Date? = nil,
         total: Amount
@@ -9960,6 +10146,7 @@ public struct Refund: Codable, Sendable, Equatable {
         self.reason = reason
         self.reasonDetails = reasonDetails
         self.reference = reference
+        self.settlement = settlement
         self.status = status
         self.succeededAt = succeededAt
         self.total = total
@@ -9977,6 +10164,7 @@ public struct Refund: Codable, Sendable, Equatable {
         case reason
         case reasonDetails = "reason_details"
         case reference
+        case settlement
         case status
         case succeededAt = "succeeded_at"
         case total
