@@ -5,11 +5,6 @@ public enum CustomDataError: Swift.Error, Equatable {
     case encodedValueTooLarge
 }
 
-public enum PayoutDestinationsError: Swift.Error, Equatable {
-    case emptyCurrency
-    case emptyFinancialAccountID
-}
-
 public struct CustomData: Codable, Sendable, Equatable {
     public static let maximumKeyBytes = 256
     public static let maximumEncodedBytes = 25 * 1024
@@ -127,22 +122,12 @@ public struct FileMetadata: Codable, Sendable, Equatable {
 }
 
 public struct PayoutDestinations: Codable, Sendable, Equatable {
-    private var storage: [String: String]
-    public init(_ values: [String: String] = [:]) throws {
-        if values.keys.contains(where: { $0.isEmpty }) { throw PayoutDestinationsError.emptyCurrency }
-        if values.values.contains(where: { $0.isEmpty }) { throw PayoutDestinationsError.emptyFinancialAccountID }
-        storage = values
+    /// Financial account that receives Ghana cedi payouts.
+    public var ghs: String?
+
+    public init(ghs: String? = nil) {
+        self.ghs = ghs
     }
-    public subscript(currency: String) -> String? { storage[currency] }
-    public var values: [String: String] { storage }
-    public mutating func set(financialAccountID: String, for currency: String) throws {
-        if currency.isEmpty { throw PayoutDestinationsError.emptyCurrency }
-        if financialAccountID.isEmpty { throw PayoutDestinationsError.emptyFinancialAccountID }
-        storage[currency] = financialAccountID
-    }
-    public mutating func remove(_ currency: String) { storage.removeValue(forKey: currency) }
-    public init(from decoder: Decoder) throws { try self.init([String: String](from: decoder)) }
-    public func encode(to encoder: Encoder) throws { try storage.encode(to: encoder) }
 }
 
 public struct DoshAccount: Codable, Sendable, Equatable {

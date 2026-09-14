@@ -42,13 +42,40 @@ final class PublicAPITests: XCTestCase {
     }
 
     func testPurchaseIntentExposesNestedResponseTypes() throws {
-        let data = Data(#"{"activity":{"recent":[{"created_at":"2026-09-09T12:01:00Z","id":"saleevt_123","purchase_intent_id":"sale_123","type":"viewed","visitor":{"ip_address":"203.0.113.7"}}]},"allow_variants":false,"created_at":"2026-09-09T12:00:00Z","id":"sale_123","merchant":{"organization_name":"Tea House Ltd"},"product":{"active":true,"created_at":"2026-09-09T11:00:00Z","dimensions":{"digital":{"bytes":1024}},"id":"prod_123","name":"Tea guide","type":"digital"},"quantity":{"min":1},"status":"active","usage":{"order":{"created_at":"2026-09-09T12:02:00Z","id":"or_123"},"single_use":true}}"#.utf8)
+        let data = Data(#"{"allow_variants":false,"created_at":"2026-09-09T12:00:00Z","id":"sale_123","merchant":{"organization_name":"Tea House Ltd"},"product":{"active":true,"created_at":"2026-09-09T11:00:00Z","dimensions":{"digital":{"bytes":1024}},"id":"prod_123","name":"Tea guide","type":"digital"},"quantity":{"min":1},"status":"active","usage":{"order":{"created_at":"2026-09-09T12:02:00Z","id":"or_123"},"single_use":true}}"#.utf8)
         let intent = try JSONDecoder.inttegro.decode(PurchaseIntent.self, from: data)
 
-        XCTAssertEqual(intent.activity?.recent?.first?.visitor?.ipAddress, "203.0.113.7")
         XCTAssertEqual(intent.merchant?.organizationName, "Tea House Ltd")
         XCTAssertEqual(intent.product?.dimensions?.digital?.bytes, 1_024)
         XCTAssertEqual(intent.usage.order?.id, "or_123")
+        XCTAssertTrue(intent.isSingleUse)
+        XCTAssertEqual(intent.usedOrderID, "or_123")
+    }
+
+    func testPayoutSettingsExposeKnownDestinationsStatically() throws {
+        let data = Data(#"{"destinations":{"ghs":"fa_123"},"fx_enabled":true,"id":"settings_123"}"#.utf8)
+        let settings = try JSONDecoder.inttegro.decode(PayoutSettingsMutation.self, from: data)
+
+        XCTAssertEqual(settings.destinations?.ghs, "fa_123")
+        XCTAssertEqual(settings.fxEnabled, true)
+    }
+
+    func testResourceSemanticsAnswerLocalQuestions() throws {
+        let paymentData = Data(#"{"amount":{"currency":"ghs","value":1000},"id":"py_123","initiated_at":"2026-09-09T12:00:00Z","next_action":{"type":"redirect"},"statement_descriptor":"INTTEGRO","status":"requires_action"}"#.utf8)
+        let payment = try JSONDecoder.inttegro.decode(Payment.self, from: paymentData)
+        XCTAssertTrue(payment.requiresAction)
+        XCTAssertFalse(payment.isTerminal)
+        XCTAssertEqual(payment.requiredAction?.type, .redirect)
+
+        let productData = Data(#"{"active":true,"created_at":"2026-09-09T12:00:00Z","id":"prod_123","name":"Tea guide","published_at":"2026-09-09T12:00:00Z","type":"digital"}"#.utf8)
+        let product = try JSONDecoder.inttegro.decode(Product.self, from: productData)
+        XCTAssertTrue(product.isPublished)
+        XCTAssertTrue(product.wasEverPublished)
+
+        let methodData = Data(#"{"active":true,"created_at":"2026-09-09T12:00:00Z","customer_id":"cu_123","id":"pm_123","type":"mobile_money","verified_at":"2026-09-09T12:00:00Z"}"#.utf8)
+        let method = try JSONDecoder.inttegro.decode(PaymentMethod.self, from: methodData)
+        XCTAssertTrue(method.isVerified)
+        XCTAssertTrue(method.isReusable)
     }
 
     func testWireEnvelopeIsUnwrappedIntoDomainValue() async throws {
