@@ -52,6 +52,14 @@ final class PublicAPITests: XCTestCase {
         XCTAssertEqual(intent.usedOrderID, "or_123")
     }
 
+    func testPayoutSettingsExposeKnownDestinationsStatically() throws {
+        let data = Data(#"{"destinations":{"ghs":"fa_123"},"fx_enabled":true,"id":"settings_123"}"#.utf8)
+        let settings = try JSONDecoder.inttegro.decode(PayoutSettingsMutation.self, from: data)
+
+        XCTAssertEqual(settings.destinations?.ghs, "fa_123")
+        XCTAssertEqual(settings.fxEnabled, true)
+    }
+
     func testResourceSemanticsAnswerLocalQuestions() throws {
         let paymentData = Data(#"{"amount":{"currency":"ghs","value":1000},"id":"py_123","initiated_at":"2026-09-09T12:00:00Z","next_action":{"type":"redirect"},"statement_descriptor":"INTTEGRO","status":"requires_action"}"#.utf8)
         let payment = try JSONDecoder.inttegro.decode(Payment.self, from: paymentData)
