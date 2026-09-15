@@ -19,6 +19,11 @@ print(order.id)
 Resource methods return domain values such as `Order` and `Payout`; HTTP response
 envelopes remain private.
 
+The source is organized by resource under `Sources/Inttegro/Models/`: each
+domain or request type has its own file, next to that resource's API client.
+SwiftPM builds these folders as one `Inttegro` module, preserving simple public
+names such as `Order` and `PaymentMethod`.
+
 ## Observability and error reporting
 
 Provide a `Telemetry` and/or `ErrorReporter` implementation to `Client`. Telemetry
