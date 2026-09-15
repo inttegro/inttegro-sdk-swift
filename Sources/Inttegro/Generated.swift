@@ -7482,6 +7482,7 @@ public struct PaymentMethod: Codable, Sendable, Equatable {
     public var customerId: String
     public var ephemeral: Bool?
     public var expiresOn: Date?
+    public var fingerprint: String
     public var id: String
     public var mobileMoney: PaymentMethodMobileMoney?
     public var owner: PaymentMethodOwner?
@@ -7500,6 +7501,7 @@ public struct PaymentMethod: Codable, Sendable, Equatable {
         customerId: String,
         ephemeral: Bool? = nil,
         expiresOn: Date? = nil,
+        fingerprint: String,
         id: String,
         mobileMoney: PaymentMethodMobileMoney? = nil,
         owner: PaymentMethodOwner? = nil,
@@ -7517,6 +7519,7 @@ public struct PaymentMethod: Codable, Sendable, Equatable {
         self.customerId = customerId
         self.ephemeral = ephemeral
         self.expiresOn = expiresOn
+        self.fingerprint = fingerprint
         self.id = id
         self.mobileMoney = mobileMoney
         self.owner = owner
@@ -7536,6 +7539,7 @@ public struct PaymentMethod: Codable, Sendable, Equatable {
         case customerId = "customer_id"
         case ephemeral
         case expiresOn = "expires_on"
+        case fingerprint
         case id
         case mobileMoney = "mobile_money"
         case owner
