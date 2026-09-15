@@ -89,7 +89,7 @@ final class PublicAPITests: XCTestCase {
         XCTAssertTrue(product.isPublished)
         XCTAssertTrue(product.wasEverPublished)
 
-        let methodData = Data(#"{"active":true,"created_at":"2026-09-09T12:00:00Z","customer_id":"cu_123","id":"pm_123","type":"mobile_money","verified_at":"2026-09-09T12:00:00Z"}"#.utf8)
+        let methodData = Data(#"{"active":true,"created_at":"2026-09-09T12:00:00Z","customer_id":"cu_123","fingerprint":"fp_123","id":"pm_123","type":"mobile_money","verified_at":"2026-09-09T12:00:00Z"}"#.utf8)
         let method = try JSONDecoder.inttegro.decode(PaymentMethod.self, from: methodData)
         XCTAssertTrue(method.isVerified)
         XCTAssertTrue(method.isReusable)
