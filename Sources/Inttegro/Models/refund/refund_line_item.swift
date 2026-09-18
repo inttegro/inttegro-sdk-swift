@@ -4,7 +4,9 @@ import Foundation
 /// Typed Inttegro domain value.
 public struct RefundLineItem: Codable, Sendable, Equatable {
     public var id: String
+    @available(*, deprecated, message: "Use orderLineItem and its ID.")
     public var orderLineItemId: String
+    public var orderLineItem: RefundOrderLineItem?
     public var originalAmountPaid: Amount
     public var reason: RefundReason?
     public var reasonDetails: String?
@@ -13,6 +15,7 @@ public struct RefundLineItem: Codable, Sendable, Equatable {
     public init(
         id: String,
         orderLineItemId: String,
+        orderLineItem: RefundOrderLineItem? = nil,
         originalAmountPaid: Amount,
         reason: RefundReason? = nil,
         reasonDetails: String? = nil,
@@ -20,6 +23,7 @@ public struct RefundLineItem: Codable, Sendable, Equatable {
     ) {
         self.id = id
         self.orderLineItemId = orderLineItemId
+        self.orderLineItem = orderLineItem
         self.originalAmountPaid = originalAmountPaid
         self.reason = reason
         self.reasonDetails = reasonDetails
@@ -29,6 +33,7 @@ public struct RefundLineItem: Codable, Sendable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id
         case orderLineItemId = "order_line_item_id"
+        case orderLineItem = "order_line_item"
         case originalAmountPaid = "original_amount_paid"
         case reason
         case reasonDetails = "reason_details"

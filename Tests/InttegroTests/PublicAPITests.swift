@@ -61,7 +61,7 @@ final class PublicAPITests: XCTestCase {
     }
 
     func testRefundSettlementUsesTheDiscriminatorAndMaskedSnapshot() throws {
-        let data = Data(#"{"created_at":"2026-09-09T12:00:00Z","id":"rf_123","line_items":[],"order_id":"or_123","reason":"requested_by_customer","settlement":{"type":"payment_method","payment_method":{"id":"pm_123","type":"bank_account","bank_account":{"type":"ghana_bank_account","ghana_bank_account":{"account_number":"****1234","last4":"1234"}}}},"status":"pending","total":{"currency":"ghs","value":1000}}"#.utf8)
+        let data = Data(#"{"created_at":"2026-09-09T12:00:00Z","id":"rf_123","line_items":[{"id":"rli_123","order_line_item_id":"oli_123","order_line_item":{"id":"oli_123","type":"product","quantity":2,"product":{"id":"prod_123","name":"Premium subscription"}},"original_amount_paid":{"currency":"ghs","value":2000},"refund_amount":{"currency":"ghs","value":1000}}],"order_id":"or_123","reason":"requested_by_customer","settlement":{"type":"payment_method","payment_method":{"id":"pm_123","type":"bank_account","bank_account":{"type":"ghana_bank_account","ghana_bank_account":{"account_number":"****1234","last4":"1234"}}}},"status":"pending","total":{"currency":"ghs","value":1000}}"#.utf8)
         let refund = try JSONDecoder.inttegro.decode(Refund.self, from: data)
 
         guard case .paymentMethod(let paymentMethod) = refund.settlement,
@@ -70,6 +70,11 @@ final class PublicAPITests: XCTestCase {
             return XCTFail("Expected a bank-account payment-method settlement")
         }
         XCTAssertEqual(ghanaBankAccount.accountNumber, "****1234")
+        guard case .product(_, let quantity, let product) = refund.lineItems[0].orderLineItem else {
+            return XCTFail("Expected a product order-line snapshot")
+        }
+        XCTAssertEqual(quantity, 2)
+        XCTAssertEqual(product.id, "prod_123")
 
         let invalidOffline = Data(#"{"type":"offline","payment_method":{"id":"pm_123","type":"mobile_money"}}"#.utf8)
         XCTAssertThrowsError(try JSONDecoder.inttegro.decode(RefundSettlement.self, from: invalidOffline))
