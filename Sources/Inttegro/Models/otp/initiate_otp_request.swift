@@ -5,7 +5,7 @@ import Foundation
 public struct InitiateOTPRequest: Codable, Sendable, Equatable {
     public var asyncDelivery: Bool?
     public var messageTemplate: String?
-    public var purpose: String?
+    public var purpose: OTPPurpose
     public var sender: String?
     public var tokenAlphabet: String?
     public var tokenAlphabetType: OTPAlphabetType?
@@ -17,7 +17,7 @@ public struct InitiateOTPRequest: Codable, Sendable, Equatable {
     public init(
         asyncDelivery: Bool? = nil,
         messageTemplate: String? = nil,
-        purpose: String? = nil,
+        purpose: OTPPurpose,
         sender: String? = nil,
         tokenAlphabet: String? = nil,
         tokenAlphabetType: OTPAlphabetType? = nil,
