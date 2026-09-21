@@ -46,4 +46,8 @@ public struct Products: Sendable {
         try await client.request(method: "POST", path: "/products/page", body: request, options: options, operation: "products.page", field: "page", authenticated: true)
     }
 
+    public func search(_ request: ResourceSearchRequest, options: RequestOptions = .init()) async throws -> ResourceSearchPage {
+        try await client.request(method: "POST", path: "/products/search", body: request, options: options, operation: "products.search", field: "search", authenticated: true)
+    }
+
 }
