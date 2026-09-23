@@ -10,7 +10,7 @@ public struct BalanceTransaction: Codable, Sendable, Equatable {
     public var claimedAt: Date?
     public var createdAt: Date
     public var id: String
-    public var orderId: String
+    public var orderId: String?
     public var paidAt: Date?
     public var paymentId: String?
     public var payoutId: String?
@@ -28,7 +28,7 @@ public struct BalanceTransaction: Codable, Sendable, Equatable {
         claimedAt: Date? = nil,
         createdAt: Date,
         id: String,
-        orderId: String,
+        orderId: String? = nil,
         paidAt: Date? = nil,
         paymentId: String? = nil,
         payoutId: String? = nil,
