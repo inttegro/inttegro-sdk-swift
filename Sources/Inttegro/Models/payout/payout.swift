@@ -4,7 +4,7 @@ import Foundation
 /// Typed Inttegro domain value.
 public struct Payout: Codable, Sendable, Equatable {
     public var amount: Amount?
-    public var balanceTransactions: [String]?
+    public var balanceTransactions: [PayoutBalanceTransaction]?
     public var canceledAt: Date?
     public var customData: CustomData?
     public var destinationId: String
@@ -28,7 +28,7 @@ public struct Payout: Codable, Sendable, Equatable {
 
     public init(
         amount: Amount? = nil,
-        balanceTransactions: [String]? = nil,
+        balanceTransactions: [PayoutBalanceTransaction]? = nil,
         canceledAt: Date? = nil,
         customData: CustomData? = nil,
         destinationId: String,
