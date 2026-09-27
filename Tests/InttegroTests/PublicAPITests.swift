@@ -6,6 +6,14 @@ import XCTest
 @testable import Inttegro
 
 final class PublicAPITests: XCTestCase {
+    func testCustomerFingerprintIsRequiredAndRoundTrips() throws {
+        let data = Data(#"{"balance":{},"created_at":"2026-09-16T00:00:00Z","guest":false,"id":"cu_123","name":"Ama","fingerprint":"cfp_v1_app_buyer"}"#.utf8)
+        let customer = try JSONDecoder.inttegro.decode(Customer.self, from: data)
+        XCTAssertEqual(customer.fingerprint, "cfp_v1_app_buyer")
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder.inttegro.encode(customer)) as! [String: Any]
+        XCTAssertEqual(encoded["fingerprint"] as? String, "cfp_v1_app_buyer")
+    }
+
     func testCustomDataControlsMutationAndPatchRemoval() throws {
         var data = try CustomData(["campaign": "launch"])
         try data.set("vip", for: "segment")
