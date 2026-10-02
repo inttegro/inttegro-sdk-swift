@@ -21,6 +21,10 @@ public struct FinancialAccounts: Sendable {
         try await client.request(method: "POST", path: "/financial_accounts/page", body: request, options: options, operation: "financial_accounts.page", field: "page", authenticated: true)
     }
 
+    public func search(_ request: ResourceSearchRequest, options: RequestOptions = .init()) async throws -> ResourceSearchPage {
+        try await client.request(method: "POST", path: "/financial_accounts/search", body: request, options: options, operation: "financial_accounts.search", field: "search", authenticated: true)
+    }
+
     /// Connect a financial account
     public func connect(_ request: FinancialAccountCreateRequest, options: RequestOptions = .init()) async throws -> FinancialAccount {
         try await client.request(method: "POST", path: "/financial_accounts/connect", body: request, options: options, operation: "financial_accounts.connect", field: "account", authenticated: true)

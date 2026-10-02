@@ -7,4 +7,5 @@ public struct BalanceTransactionType: RawRepresentable, Codable, Hashable, Senda
     public init(rawValue: String) { self.rawValue = rawValue }
     public static let payment = Self(rawValue: "payment")
     public static let refund = Self(rawValue: "refund")
+    public static let payout = Self(rawValue: "payout")
 }

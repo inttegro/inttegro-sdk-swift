@@ -41,6 +41,10 @@ public struct Payouts: Sendable {
         try await client.request(method: "POST", path: "/payouts/page", body: request, options: options, operation: "payouts.page", field: "page", authenticated: true)
     }
 
+    public func search(_ request: ResourceSearchRequest, options: RequestOptions = .init()) async throws -> ResourceSearchPage {
+        try await client.request(method: "POST", path: "/payouts/search", body: request, options: options, operation: "payouts.search", field: "search", authenticated: true)
+    }
+
     /// Cancel a scheduled payout
     public func cancel(_ request: CancelPayoutRequest, options: RequestOptions = .init()) async throws -> Payout {
         try await client.request(method: "POST", path: "/payouts/cancel", body: request, options: options, operation: "payouts.cancel", field: "payout", authenticated: true)

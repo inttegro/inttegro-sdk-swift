@@ -6,6 +6,14 @@ import XCTest
 @testable import Inttegro
 
 final class PublicAPITests: XCTestCase {
+    func testCustomerFingerprintIsRequiredAndRoundTrips() throws {
+        let data = Data(#"{"balance":{},"created_at":"2026-09-16T00:00:00Z","guest":false,"id":"cu_123","name":"Ama","fingerprint":"cfp_v1_app_buyer"}"#.utf8)
+        let customer = try JSONDecoder.inttegro.decode(Customer.self, from: data)
+        XCTAssertEqual(customer.fingerprint, "cfp_v1_app_buyer")
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder.inttegro.encode(customer)) as! [String: Any]
+        XCTAssertEqual(encoded["fingerprint"] as? String, "cfp_v1_app_buyer")
+    }
+
     func testCustomDataControlsMutationAndPatchRemoval() throws {
         var data = try CustomData(["campaign": "launch"])
         try data.set("vip", for: "segment")
@@ -39,6 +47,16 @@ final class PublicAPITests: XCTestCase {
             (encoded["ghs"] as! [String: Any])["includes_transactions_before"] as? String,
             "2026-09-09T12:00:00.000Z"
         )
+    }
+
+    func testBalanceTransactionExposesAllPublicAllocations() throws {
+	let data = Data(#"{"id":"bt_1","type":"payment","payment_id":"py_1","order_id":"or_1","amount":{"currency":"ghs","value":2500},"available_amount":{"currency":"ghs","value":1500},"pending_amount":{"currency":"ghs","value":1000},"spent_amount":{"currency":"ghs","value":0},"allocations":[{"id":"bta_1","type":"payout","status":"pending","payout":{"id":"po_1","amount":{"currency":"ghs","value":1000}},"created_at":"2026-09-09T12:01:00Z","updated_at":"2026-09-09T12:01:00Z"}],"created_at":"2026-09-09T12:00:00Z"}"#.utf8)
+	let transaction = try JSONDecoder.inttegro.decode(BalanceTransaction.self, from: data)
+
+	XCTAssertEqual(transaction.availableAmount?.value, 1_500)
+	XCTAssertEqual(transaction.allocations?.first?.type, .payout)
+	XCTAssertEqual(transaction.allocations?.first?.status, .pending)
+	XCTAssertEqual(transaction.allocations?.first?.payout?.id, "po_1")
     }
 
     func testPurchaseIntentExposesNestedResponseTypes() throws {
