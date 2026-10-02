@@ -1,8 +1,7 @@
 # Inttegro Swift SDK
 
-Accept GHS payments and manage Ghana Mobile Money checkout, orders, refunds,
-and payouts with Inttegro's typed server-side Swift SDK on macOS and Linux. This
-package is separate from the native payment-sheet SDK.
+The official typed Swift client for server-side Inttegro integrations on macOS
+and Linux. This package is separate from the native payment-sheet SDK.
 Never embed a server API key in an iOS application; use the native payment-sheet
 SDK for customer-facing apps.
 
