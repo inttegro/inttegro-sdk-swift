@@ -8,6 +8,7 @@ public struct Customer: Codable, Sendable, Equatable {
     public var createdAt: Date
     public var customData: CustomData?
     public var emailAddress: String?
+    public var fingerprint: String
     public var guest: Bool
     public var id: String
     public var name: String
@@ -24,6 +25,7 @@ public struct Customer: Codable, Sendable, Equatable {
         createdAt: Date,
         customData: CustomData? = nil,
         emailAddress: String? = nil,
+        fingerprint: String,
         guest: Bool,
         id: String,
         name: String,
@@ -39,6 +41,7 @@ public struct Customer: Codable, Sendable, Equatable {
         self.createdAt = createdAt
         self.customData = customData
         self.emailAddress = emailAddress
+        self.fingerprint = fingerprint
         self.guest = guest
         self.id = id
         self.name = name
@@ -56,6 +59,7 @@ public struct Customer: Codable, Sendable, Equatable {
         case createdAt = "created_at"
         case customData = "custom_data"
         case emailAddress = "email_address"
+        case fingerprint
         case guest
         case id
         case name
