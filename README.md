@@ -1,7 +1,7 @@
 # Inttegro Swift SDK
 
-The official server-side Swift SDK for Inttegro. This package is separate from
-the native payment-sheet SDK and is suitable for Swift services on macOS and Linux.
+The official typed Swift client for server-side Inttegro integrations on macOS
+and Linux. This package is separate from the native payment-sheet SDK.
 Never embed a server API key in an iOS application; use the native payment-sheet
 SDK for customer-facing apps.
 
