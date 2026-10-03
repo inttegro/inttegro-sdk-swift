@@ -60,14 +60,50 @@ final class PublicAPITests: XCTestCase {
     }
 
     func testPurchaseIntentExposesNestedResponseTypes() throws {
-        let data = Data(#"{"allow_variants":false,"created_at":"2026-09-09T12:00:00Z","id":"sale_123","merchant":{"organization_name":"Tea House Ltd"},"product":{"active":true,"created_at":"2026-09-09T11:00:00Z","dimensions":{"digital":{"bytes":1024}},"id":"prod_123","name":"Tea guide","type":"digital"},"quantity":{"min":1},"status":"active","usage":{"order":{"created_at":"2026-09-09T12:02:00Z","id":"or_123"},"single_use":true}}"#.utf8)
+        let data = Data(#"{"allow_variants":false,"created_at":"2026-09-09T12:00:00Z","id":"sale_123","merchant":{"organization_name":"Tea House Ltd"},"presentation":{"buy_page":{"text":{"checkout_section_title":"Support this cause"}}},"product":{"active":true,"created_at":"2026-09-09T11:00:00Z","dimensions":{"digital":{"bytes":1024}},"id":"prod_123","name":"Tea guide","type":"digital"},"quantity":{"min":1},"status":"active","usage":{"order":{"created_at":"2026-09-09T12:02:00Z","id":"or_123"},"single_use":true}}"#.utf8)
         let intent = try JSONDecoder.inttegro.decode(PurchaseIntent.self, from: data)
 
         XCTAssertEqual(intent.merchant?.organizationName, "Tea House Ltd")
         XCTAssertEqual(intent.product?.dimensions?.digital?.bytes, 1_024)
         XCTAssertEqual(intent.usage.order?.id, "or_123")
+        XCTAssertEqual(intent.presentation?.buyPage?.text?.checkoutSectionTitle, "Support this cause")
         XCTAssertTrue(intent.isSingleUse)
         XCTAssertEqual(intent.usedOrderID, "or_123")
+
+        let request = CreatePurchaseIntentRequest(
+            presentation: CreatePurchaseIntentPresentation(
+                buyPage: CreatePurchaseIntentPresentationBuyPage(
+                    text: CreatePurchaseIntentPresentationBuyPageText(
+                        amountFieldLabel: "Your contribution"
+                    )
+                )
+            ),
+            quantity: CreatePurchaseIntentRequestQuantity(min: 1)
+        )
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder.inttegro.encode(request)) as! [String: Any]
+        let presentation = encoded["presentation"] as! [String: Any]
+        let buyPage = presentation["buy_page"] as! [String: Any]
+        let text = buyPage["text"] as! [String: Any]
+        XCTAssertEqual(text["amount_field_label"] as? String, "Your contribution")
+
+        let update = UpdatePurchaseIntentRequest(
+            id: "sale_123",
+            presentation: UpdatePurchaseIntentPresentation(
+                buyPage: UpdatePurchaseIntentPresentationBuyPage(
+                    text: UpdatePurchaseIntentPresentationBuyPageText(
+                        checkoutSectionTitle: "Contribute now",
+                        amountFieldLabel: .some(nil)
+                    )
+                )
+            )
+        )
+        let updateJSON = try JSONSerialization.jsonObject(with: JSONEncoder.inttegro.encode(update)) as! [String: Any]
+        let updatePresentation = updateJSON["presentation"] as! [String: Any]
+        let updateBuyPage = updatePresentation["buy_page"] as! [String: Any]
+        let updateText = updateBuyPage["text"] as! [String: Any]
+        XCTAssertEqual(updateText["checkout_section_title"] as? String, "Contribute now")
+        XCTAssertTrue(updateText["amount_field_label"] is NSNull)
+        XCTAssertNil(updateText["primary_action_label"])
     }
 
     func testPayoutSettingsExposeKnownDestinationsStatically() throws {

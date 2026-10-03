@@ -1,0 +1,28 @@
+// Generated typed Inttegro domain or request value. Do not edit manually.
+import Foundation
+
+/// Sparse text update for a hosted Buy page.
+public struct UpdatePurchaseIntentPresentationBuyPageText: Codable, Sendable, Equatable {
+    /// `nil` preserves the current value; `.some(nil)` restores the default.
+    public var checkoutSectionTitle: String??
+    /// `nil` preserves the current value; `.some(nil)` restores the default.
+    public var amountFieldLabel: String??
+    /// `nil` preserves the current value; `.some(nil)` restores the default.
+    public var primaryActionLabel: String??
+
+    public init(
+        checkoutSectionTitle: String?? = nil,
+        amountFieldLabel: String?? = nil,
+        primaryActionLabel: String?? = nil
+    ) {
+        self.checkoutSectionTitle = checkoutSectionTitle
+        self.amountFieldLabel = amountFieldLabel
+        self.primaryActionLabel = primaryActionLabel
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case checkoutSectionTitle = "checkout_section_title"
+        case amountFieldLabel = "amount_field_label"
+        case primaryActionLabel = "primary_action_label"
+    }
+}
