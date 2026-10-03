@@ -8,7 +8,7 @@ public struct FinancialAccount: Codable, Sendable, Equatable {
     public var currency: String
     public var customData: CustomData?
     public var description: String?
-    public var fingerprint: String?
+    public var fingerprint: String
     public var id: String
     public var institution: FinancialInstitution?
     public var label: String?
@@ -30,7 +30,7 @@ public struct FinancialAccount: Codable, Sendable, Equatable {
         currency: String,
         customData: CustomData? = nil,
         description: String? = nil,
-        fingerprint: String? = nil,
+        fingerprint: String,
         id: String,
         institution: FinancialInstitution? = nil,
         label: String? = nil,
