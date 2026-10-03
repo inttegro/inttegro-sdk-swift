@@ -9,6 +9,7 @@ public struct CreatePurchaseIntentRequest: Codable, Sendable, Equatable {
     public var priceId: String?
     public var usage: CreatePurchaseIntentRequestUsage?
     public var expiresAt: Date?
+    public var presentation: CreatePurchaseIntentPresentation?
     public var quantity: CreatePurchaseIntentRequestQuantity
 
     public init(
@@ -18,6 +19,7 @@ public struct CreatePurchaseIntentRequest: Codable, Sendable, Equatable {
         priceId: String? = nil,
         usage: CreatePurchaseIntentRequestUsage? = nil,
         expiresAt: Date? = nil,
+        presentation: CreatePurchaseIntentPresentation? = nil,
         quantity: CreatePurchaseIntentRequestQuantity
     ) {
         self.product = product
@@ -26,6 +28,7 @@ public struct CreatePurchaseIntentRequest: Codable, Sendable, Equatable {
         self.priceId = priceId
         self.usage = usage
         self.expiresAt = expiresAt
+        self.presentation = presentation
         self.quantity = quantity
     }
 
@@ -36,6 +39,7 @@ public struct CreatePurchaseIntentRequest: Codable, Sendable, Equatable {
         case priceId = "price_id"
         case usage
         case expiresAt = "expires_at"
+        case presentation
         case quantity
     }
 }

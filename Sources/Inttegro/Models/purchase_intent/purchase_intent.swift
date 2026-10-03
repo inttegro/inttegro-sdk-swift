@@ -10,6 +10,7 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
     public var inactiveAt: Date?
     public var merchant: PurchaseIntentMerchant?
     public var price: PurchaseIntentPrice?
+    public var presentation: PurchaseIntentPresentation?
     public var product: PurchaseIntentProduct?
     public var quantity: PurchaseIntentQuantity
     public var status: PurchaseIntentStatus
@@ -25,6 +26,7 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
         inactiveAt: Date? = nil,
         merchant: PurchaseIntentMerchant? = nil,
         price: PurchaseIntentPrice? = nil,
+        presentation: PurchaseIntentPresentation? = nil,
         product: PurchaseIntentProduct? = nil,
         quantity: PurchaseIntentQuantity,
         status: PurchaseIntentStatus,
@@ -39,6 +41,7 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
         self.inactiveAt = inactiveAt
         self.merchant = merchant
         self.price = price
+        self.presentation = presentation
         self.product = product
         self.quantity = quantity
         self.status = status
@@ -55,6 +58,7 @@ public struct PurchaseIntent: Codable, Sendable, Equatable {
         case inactiveAt = "inactive_at"
         case merchant
         case price
+        case presentation
         case product
         case quantity
         case status

@@ -8,19 +8,22 @@ public struct UpdatePurchaseIntentRequest: Codable, Sendable, Equatable {
     public var quantity: UpdatePurchaseIntentRequestQuantity?
     public var purchaseIntentId: String?
     public var reactivate: Bool?
+    public var presentation: UpdatePurchaseIntentPresentation?
 
     public init(
         expiresAt: Date? = nil,
         id: String? = nil,
         quantity: UpdatePurchaseIntentRequestQuantity? = nil,
         purchaseIntentId: String? = nil,
-        reactivate: Bool? = nil
+        reactivate: Bool? = nil,
+        presentation: UpdatePurchaseIntentPresentation? = nil
     ) {
         self.expiresAt = expiresAt
         self.id = id
         self.quantity = quantity
         self.purchaseIntentId = purchaseIntentId
         self.reactivate = reactivate
+        self.presentation = presentation
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -29,5 +32,6 @@ public struct UpdatePurchaseIntentRequest: Codable, Sendable, Equatable {
         case quantity
         case purchaseIntentId = "purchase_intent_id"
         case reactivate
+        case presentation
     }
 }
