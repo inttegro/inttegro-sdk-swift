@@ -9,11 +9,13 @@ public struct Payout: Codable, Sendable, Equatable {
     public var canceledAt: Date?
     public var customData: CustomData?
     public var destinationId: String
+    /// Deprecated compatibility projection. Use `failure` for new integrations.
     public var error: PayoutError?
     public var executeAfter: Date
     public var executedBy: String?
     public var expectedAt: Date?
     public var failedAt: Date?
+    public var failure: PayoutFailure?
     public var id: String
     public var initiatedAt: Date
     public var initiatedBy: String?
@@ -39,6 +41,7 @@ public struct Payout: Codable, Sendable, Equatable {
         executedBy: String? = nil,
         expectedAt: Date? = nil,
         failedAt: Date? = nil,
+        failure: PayoutFailure? = nil,
         id: String,
         initiatedAt: Date,
         initiatedBy: String? = nil,
@@ -63,6 +66,7 @@ public struct Payout: Codable, Sendable, Equatable {
         self.executedBy = executedBy
         self.expectedAt = expectedAt
         self.failedAt = failedAt
+        self.failure = failure
         self.id = id
         self.initiatedAt = initiatedAt
         self.initiatedBy = initiatedBy
@@ -89,6 +93,7 @@ public struct Payout: Codable, Sendable, Equatable {
         case executedBy = "executed_by"
         case expectedAt = "expected_at"
         case failedAt = "failed_at"
+        case failure
         case id
         case initiatedAt = "initiated_at"
         case initiatedBy = "initiated_by"

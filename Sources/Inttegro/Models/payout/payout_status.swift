@@ -10,6 +10,6 @@ public struct PayoutStatus: RawRepresentable, Codable, Hashable, Sendable {
     public static let processing = Self(rawValue: "processing")
     public static let executing = Self(rawValue: "executing")
     public static let succeeded = Self(rawValue: "succeeded")
-    public static let invalid = Self(rawValue: "invalid")
+    public static let failed = Self(rawValue: "failed")
     public static let canceled = Self(rawValue: "canceled")
 }
