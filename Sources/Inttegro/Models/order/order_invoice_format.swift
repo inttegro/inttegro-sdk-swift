@@ -5,15 +5,12 @@ import Foundation
 public struct OrderInvoiceFormat: Codable, Sendable, Equatable {
     public var web: OrderDocumentFormat
     public var pdf: OrderDocumentFormat
-    public var receipt: OrderDocumentFormat?
 
     public init(
         web: OrderDocumentFormat,
-        pdf: OrderDocumentFormat,
-        receipt: OrderDocumentFormat? = nil
+        pdf: OrderDocumentFormat
     ) {
         self.web = web
         self.pdf = pdf
-        self.receipt = receipt
     }
 }

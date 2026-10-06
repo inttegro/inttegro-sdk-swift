@@ -11,6 +11,7 @@ public struct Payment: Codable, Sendable, Equatable {
     public var paymentMethod: PaymentMethodSnapshot?
     public var billingDetails: PaymentBillingDetails?
     public var customer: OrderCustomer?
+    public var receipt: OrderReceipt?
     public var latestAttempt: PaymentAttempt?
     public var nextAction: PaymentNextAction?
     public var latestError: PaymentError?
@@ -34,6 +35,7 @@ public struct Payment: Codable, Sendable, Equatable {
         paymentMethod: PaymentMethodSnapshot? = nil,
         billingDetails: PaymentBillingDetails? = nil,
         customer: OrderCustomer? = nil,
+        receipt: OrderReceipt? = nil,
         latestAttempt: PaymentAttempt? = nil,
         nextAction: PaymentNextAction? = nil,
         latestError: PaymentError? = nil,
@@ -56,6 +58,7 @@ public struct Payment: Codable, Sendable, Equatable {
         self.paymentMethod = paymentMethod
         self.billingDetails = billingDetails
         self.customer = customer
+        self.receipt = receipt
         self.latestAttempt = latestAttempt
         self.nextAction = nextAction
         self.latestError = latestError
@@ -80,6 +83,7 @@ public struct Payment: Codable, Sendable, Equatable {
         case paymentMethod = "payment_method"
         case billingDetails = "billing_details"
         case customer
+        case receipt
         case latestAttempt = "latest_attempt"
         case nextAction = "next_action"
         case latestError = "latest_error"
