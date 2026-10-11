@@ -10,6 +10,7 @@ public struct Application: Codable, Sendable, Equatable {
     public var createdAt: Date
     public var updatedAt: Date?
     public var archivedAt: Date?
+    public var capabilities: [String: JSONValue]
     public var secretKey: ApplicationSecretKey?
     public var relationship: ApplicationRelationship?
 
@@ -21,6 +22,7 @@ public struct Application: Codable, Sendable, Equatable {
         createdAt: Date,
         updatedAt: Date? = nil,
         archivedAt: Date? = nil,
+        capabilities: [String: JSONValue],
         secretKey: ApplicationSecretKey? = nil,
         relationship: ApplicationRelationship? = nil
     ) {
@@ -31,6 +33,7 @@ public struct Application: Codable, Sendable, Equatable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.archivedAt = archivedAt
+        self.capabilities = capabilities
         self.secretKey = secretKey
         self.relationship = relationship
     }
@@ -43,6 +46,7 @@ public struct Application: Codable, Sendable, Equatable {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case archivedAt = "archived_at"
+        case capabilities
         case secretKey = "secret_key"
         case relationship
     }
