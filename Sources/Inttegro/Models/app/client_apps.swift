@@ -16,6 +16,11 @@ public struct Apps: Sendable {
         try await client.request(method: "POST", path: "/apps/lookup", body: EmptyBody(), options: options, operation: "apps.lookup", field: "app", authenticated: true)
     }
 
+    /// Retrieve the authenticated application's payment and payout capabilities
+    public func capabilities(options: RequestOptions = .init()) async throws -> ApplicationCapabilities {
+        try await client.request(method: "POST", path: "/apps/capabilities", body: EmptyBody(), options: options, operation: "apps.capabilities", field: "capabilities", authenticated: true)
+    }
+
     /// Update the authenticated application
     public func update(_ request: UpdateApplicationRequest, options: RequestOptions = .init()) async throws -> Application {
         try await client.request(method: "POST", path: "/apps/update", body: request, options: options, operation: "apps.update", field: "app", authenticated: true)
