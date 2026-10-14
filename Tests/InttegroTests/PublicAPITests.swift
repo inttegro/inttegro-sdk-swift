@@ -107,11 +107,13 @@ final class PublicAPITests: XCTestCase {
     }
 
     func testPayoutSettingsExposeKnownDestinationsStatically() throws {
-        let data = Data(#"{"destinations":{"ghs":"fa_123"},"fx_enabled":true,"id":"settings_123"}"#.utf8)
+        let data = Data(#"{"destinations":{"ghs":"fa_123"},"fx_enabled":true,"id":"settings_123","limits":{"amount":{"min":{"currency":"ghs","value":25000},"max":{"currency":"ghs","value":9999999}}}}"#.utf8)
         let settings = try JSONDecoder.inttegro.decode(PayoutSettingsMutation.self, from: data)
 
         XCTAssertEqual(settings.destinations?.ghs, "fa_123")
         XCTAssertEqual(settings.fxEnabled, true)
+        XCTAssertEqual(settings.limits.amount.min.value, 25_000)
+        XCTAssertEqual(settings.limits.amount.max.value, 9_999_999)
     }
 
     func testRefundSettlementUsesTheDiscriminatorAndMaskedSnapshot() throws {

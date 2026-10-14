@@ -6,14 +6,17 @@ public struct PayoutSettingsMutation: Codable, Sendable, Equatable {
     public var destinations: PayoutDestinations?
     public var fxEnabled: Bool?
     public var id: String?
+    public var limits: PayoutSettingsLimits
     public var schedule: PayoutSettingsMutationSchedule?
 
     public init(
+        limits: PayoutSettingsLimits,
         destinations: PayoutDestinations? = nil,
         fxEnabled: Bool? = nil,
         id: String? = nil,
         schedule: PayoutSettingsMutationSchedule? = nil
     ) {
+        self.limits = limits
         self.destinations = destinations
         self.fxEnabled = fxEnabled
         self.id = id
@@ -24,6 +27,7 @@ public struct PayoutSettingsMutation: Codable, Sendable, Equatable {
         case destinations
         case fxEnabled = "fx_enabled"
         case id
+        case limits
         case schedule
     }
 }
