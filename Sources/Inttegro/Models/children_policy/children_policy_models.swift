@@ -75,7 +75,6 @@ public struct ChildrenPolicyCapabilities: Codable, Sendable, Equatable {
 
 public struct ChildrenPolicy: Codable, Sendable, Equatable {
     public var id: String
-    public var ownerApplicationId: String
     public var version: Int
     public var activeVersion: Int
     public var name: String
@@ -85,7 +84,7 @@ public struct ChildrenPolicy: Codable, Sendable, Equatable {
     public var updatedAt: Date
     public var versionCreatedAt: Date
     private enum CodingKeys: String, CodingKey {
-        case id; case ownerApplicationId = "owner_application_id"; case version
+        case id; case version
         case activeVersion = "active_version"; case name; case description; case capabilities
         case createdAt = "created_at"; case updatedAt = "updated_at"; case versionCreatedAt = "version_created_at"
     }
