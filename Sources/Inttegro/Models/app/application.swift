@@ -13,6 +13,7 @@ public struct Application: Codable, Sendable, Equatable {
     public var capabilities: [String: JSONValue]
     public var secretKey: ApplicationSecretKey?
     public var relationship: ApplicationRelationship?
+    public var operatingPolicy: ApplicationOperatingPolicy?
 
     public init(
         id: String,
@@ -24,7 +25,8 @@ public struct Application: Codable, Sendable, Equatable {
         archivedAt: Date? = nil,
         capabilities: [String: JSONValue],
         secretKey: ApplicationSecretKey? = nil,
-        relationship: ApplicationRelationship? = nil
+        relationship: ApplicationRelationship? = nil,
+        operatingPolicy: ApplicationOperatingPolicy? = nil
     ) {
         self.id = id
         self.name = name
@@ -36,6 +38,7 @@ public struct Application: Codable, Sendable, Equatable {
         self.capabilities = capabilities
         self.secretKey = secretKey
         self.relationship = relationship
+        self.operatingPolicy = operatingPolicy
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -49,5 +52,6 @@ public struct Application: Codable, Sendable, Equatable {
         case capabilities
         case secretKey = "secret_key"
         case relationship
+        case operatingPolicy = "operating_policy"
     }
 }

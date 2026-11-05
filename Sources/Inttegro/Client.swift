@@ -135,6 +135,8 @@ public final class Client: @unchecked Sendable {
     }
 
     public var apps: Apps { .init(client: self) }
+    public var childrenPolicies: ChildrenPolicies { .init(client: self) }
+    public var operatingPolicies: OperatingPolicies { .init(client: self) }
     public var balanceTransactions: BalanceTransactions { .init(client: self) }
     public var balances: Balances { .init(client: self) }
     public var broadcasts: Broadcasts { .init(client: self) }

@@ -29,8 +29,24 @@ final class PublicAPITests: XCTestCase {
         let client = try Client(apiKey: "sk_test_example")
         _ = client.orders
         _ = client.financialAccounts
+        _ = client.childrenPolicies
+        _ = client.operatingPolicies
         let amount = AmountParams(currency: .ghs, value: 5_000)
         XCTAssertEqual(amount.value, 5_000)
+    }
+
+    func testOperatingPolicySelectionUsesPublicWireShape() throws {
+        let named = try JSONSerialization.jsonObject(
+            with: JSONEncoder.inttegro.encode(OperatingPolicySelection.id("op_123"))
+        ) as! [String: Any]
+        XCTAssertEqual(named["id"] as? String, "op_123")
+
+        let inline = try JSONSerialization.jsonObject(
+            with: JSONEncoder.inttegro.encode(
+                OperatingPolicySelection.inline(OperatingPolicyCapabilitiesInput())
+            )
+        ) as! [String: Any]
+        XCTAssertNotNil(inline["capabilities"] as? [String: Any])
     }
 
     func testBalanceSnapshotExposesGHSStatically() throws {

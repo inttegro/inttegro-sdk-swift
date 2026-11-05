@@ -8,6 +8,7 @@ public struct CreateApplicationRequest: Codable, Sendable, Equatable {
     public var legalEntityType: String?
     public var placementParentApplicationId: String?
     public var relationshipPolicy: CreateApplicationRequestRelationshipPolicy?
+    public var operatingPolicy: OperatingPolicySelection?
     public var name: String
 
     public init(
@@ -16,6 +17,7 @@ public struct CreateApplicationRequest: Codable, Sendable, Equatable {
         legalEntityType: String? = nil,
         placementParentApplicationId: String? = nil,
         relationshipPolicy: CreateApplicationRequestRelationshipPolicy? = nil,
+        operatingPolicy: OperatingPolicySelection? = nil,
         name: String
     ) {
         self.alias = alias
@@ -23,6 +25,7 @@ public struct CreateApplicationRequest: Codable, Sendable, Equatable {
         self.legalEntityType = legalEntityType
         self.placementParentApplicationId = placementParentApplicationId
         self.relationshipPolicy = relationshipPolicy
+        self.operatingPolicy = operatingPolicy
         self.name = name
     }
 
@@ -32,6 +35,7 @@ public struct CreateApplicationRequest: Codable, Sendable, Equatable {
         case legalEntityType = "legal_entity_type"
         case placementParentApplicationId = "placement_parent_application_id"
         case relationshipPolicy = "relationship_policy"
+        case operatingPolicy = "operating_policy"
         case name
     }
 }
