@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.1
+
+- Corrected runtime version metadata for the 0.10 release line.
+
 ## 0.10.0
 
 - Added typed private-beta children-policy lookup and operating-policy create,

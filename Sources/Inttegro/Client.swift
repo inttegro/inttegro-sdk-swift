@@ -3,7 +3,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public let inttegroSDKVersion = "0.9.0"
+public let inttegroSDKVersion = "0.10.1"
 
 public struct RequestOptions: Sendable {
     public var idempotencyKey: String?
