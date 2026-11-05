@@ -89,3 +89,40 @@ public struct ChildrenPolicy: Codable, Sendable, Equatable {
         case createdAt = "created_at"; case updatedAt = "updated_at"; case versionCreatedAt = "version_created_at"
     }
 }
+
+/// Parameters for retrieving the latest or an exact children-policy version.
+public struct LookupChildrenPolicyRequest: Codable, Sendable, Equatable {
+    public var version: Int?
+    public init(version: Int? = nil) { self.version = version }
+}
+
+/// Optional pagination parameters for listing children-policy versions.
+public struct PageChildrenPoliciesRequest: Codable, Sendable, Equatable {
+    public var number: Int?
+    public var size: Int?
+    public init(number: Int? = nil, size: Int? = nil) {
+        self.number = number
+        self.size = size
+    }
+}
+
+/// A page of immutable children-policy versions, newest first.
+public struct ChildrenPolicyPage: Codable, Sendable, Equatable {
+    public var number: Int
+    public var size: Int
+    public var count: Int
+    public var total: Int
+    public var hasMore: Bool
+    public var versions: [ChildrenPolicy]
+    public init(number: Int, size: Int, count: Int, total: Int, hasMore: Bool, versions: [ChildrenPolicy]) {
+        self.number = number
+        self.size = size
+        self.count = count
+        self.total = total
+        self.hasMore = hasMore
+        self.versions = versions
+    }
+    private enum CodingKeys: String, CodingKey {
+        case number; case size; case count; case total; case hasMore = "has_more"; case versions
+    }
+}

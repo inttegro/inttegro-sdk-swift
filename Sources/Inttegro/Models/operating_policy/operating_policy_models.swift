@@ -164,8 +164,48 @@ public struct CreateOperatingPolicyRequest: Codable, Sendable, Equatable {
 
 public struct LookupOperatingPolicyRequest: Codable, Sendable, Equatable {
     public var operatingPolicyId: String
-    public init(operatingPolicyId: String) { self.operatingPolicyId = operatingPolicyId }
-    private enum CodingKeys: String, CodingKey { case operatingPolicyId = "operating_policy_id" }
+    public var version: Int?
+    public init(operatingPolicyId: String, version: Int? = nil) {
+        self.operatingPolicyId = operatingPolicyId
+        self.version = version
+    }
+    private enum CodingKeys: String, CodingKey { case operatingPolicyId = "operating_policy_id"; case version }
+}
+
+/// Parameters for listing versions of one operating policy.
+public struct PageOperatingPoliciesRequest: Codable, Sendable, Equatable {
+    public var operatingPolicyId: String
+    public var number: Int?
+    public var size: Int?
+    public init(operatingPolicyId: String, number: Int? = nil, size: Int? = nil) {
+        self.operatingPolicyId = operatingPolicyId
+        self.number = number
+        self.size = size
+    }
+    private enum CodingKeys: String, CodingKey {
+        case operatingPolicyId = "operating_policy_id"; case number; case size
+    }
+}
+
+/// A page of immutable operating-policy versions, newest first.
+public struct OperatingPolicyPage: Codable, Sendable, Equatable {
+    public var number: Int
+    public var size: Int
+    public var count: Int
+    public var total: Int
+    public var hasMore: Bool
+    public var versions: [OperatingPolicy]
+    public init(number: Int, size: Int, count: Int, total: Int, hasMore: Bool, versions: [OperatingPolicy]) {
+        self.number = number
+        self.size = size
+        self.count = count
+        self.total = total
+        self.hasMore = hasMore
+        self.versions = versions
+    }
+    private enum CodingKeys: String, CodingKey {
+        case number; case size; case count; case total; case hasMore = "has_more"; case versions
+    }
 }
 
 public struct UpdateOperatingPolicyRequest: Codable, Sendable, Equatable {
