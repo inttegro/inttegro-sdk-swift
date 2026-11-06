@@ -132,6 +132,15 @@ final class PublicAPITests: XCTestCase {
         XCTAssertEqual(settings.limits.amount.max.value, 9_999_999)
     }
 
+    func testPayoutContributionExposesTypedAllocationStatus() throws {
+        let data = Data(#"{"allocated_amount":{"currency":"ghs","value":12500},"amount":{"currency":"ghs","value":20000},"id":"bt_123","status":"reserved"}"#.utf8)
+        let contribution = try JSONDecoder.inttegro.decode(PayoutBalanceTransaction.self, from: data)
+
+        XCTAssertEqual(contribution.status, .reserved)
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder.inttegro.encode(contribution)) as! [String: Any]
+        XCTAssertEqual(encoded["status"] as? String, "reserved")
+    }
+
     func testRefundSettlementUsesTheDiscriminatorAndMaskedSnapshot() throws {
         let data = Data(#"{"created_at":"2026-09-09T12:00:00Z","id":"rf_123","line_items":[{"id":"rli_123","order_line_item_id":"oli_123","order_line_item":{"id":"oli_123","type":"product","quantity":2,"product":{"id":"prod_123","name":"Premium subscription"}},"original_amount_paid":{"currency":"ghs","value":2000},"refund_amount":{"currency":"ghs","value":1000}}],"order_id":"or_123","reason":"requested_by_customer","settlement":{"type":"payment_method","payment_method":{"id":"pm_123","type":"bank_account","bank_account":{"type":"ghana_bank_account","ghana_bank_account":{"account_number":"****1234","last4":"1234"}}}},"status":"pending","total":{"currency":"ghs","value":1000}}"#.utf8)
         let refund = try JSONDecoder.inttegro.decode(Refund.self, from: data)

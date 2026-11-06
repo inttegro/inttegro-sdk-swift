@@ -17,10 +17,10 @@ public struct OperatingPolicyBTAgingSpecReference: Codable, Sendable, Equatable 
 }
 
 public struct OperatingPolicyBTAgingSpec: Codable, Sendable, Equatable {
-    public var publicId: String
+    public var id: String
     public var tPlus: String
-    public init(publicId: String, tPlus: String) { self.publicId = publicId; self.tPlus = tPlus }
-    private enum CodingKeys: String, CodingKey { case publicId = "public_id"; case tPlus = "t_plus" }
+    public init(id: String, tPlus: String) { self.id = id; self.tPlus = tPlus }
+    private enum CodingKeys: String, CodingKey { case id; case tPlus = "t_plus" }
 }
 
 public struct OperatingPolicyPaymentsCapabilitiesInput: Codable, Sendable, Equatable {

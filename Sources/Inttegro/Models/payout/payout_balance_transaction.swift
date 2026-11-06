@@ -9,16 +9,25 @@ public struct PayoutBalanceTransaction: Codable, Sendable, Equatable {
     public var amount: Amount
     /// Unique balance transaction identifier.
     public var id: String
+    /// Whether this contribution remains reserved, completed, or released.
+    public var status: PayoutBalanceTransactionStatus
 
-    public init(allocatedAmount: Amount, amount: Amount, id: String) {
+    public init(
+        allocatedAmount: Amount,
+        amount: Amount,
+        id: String,
+        status: PayoutBalanceTransactionStatus
+    ) {
         self.allocatedAmount = allocatedAmount
         self.amount = amount
         self.id = id
+        self.status = status
     }
 
     private enum CodingKeys: String, CodingKey {
         case allocatedAmount = "allocated_amount"
         case amount
         case id
+        case status
     }
 }

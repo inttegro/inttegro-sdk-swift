@@ -11,6 +11,7 @@ public struct Application: Codable, Sendable, Equatable {
     public var updatedAt: Date?
     public var archivedAt: Date?
     public var capabilities: [String: JSONValue]
+    public var childrenPolicy: ChildrenPolicy?
     public var secretKey: ApplicationSecretKey?
     public var relationship: ApplicationRelationship?
     public var operatingPolicy: ApplicationOperatingPolicy?
@@ -24,6 +25,7 @@ public struct Application: Codable, Sendable, Equatable {
         updatedAt: Date? = nil,
         archivedAt: Date? = nil,
         capabilities: [String: JSONValue],
+        childrenPolicy: ChildrenPolicy? = nil,
         secretKey: ApplicationSecretKey? = nil,
         relationship: ApplicationRelationship? = nil,
         operatingPolicy: ApplicationOperatingPolicy? = nil
@@ -36,6 +38,7 @@ public struct Application: Codable, Sendable, Equatable {
         self.updatedAt = updatedAt
         self.archivedAt = archivedAt
         self.capabilities = capabilities
+        self.childrenPolicy = childrenPolicy
         self.secretKey = secretKey
         self.relationship = relationship
         self.operatingPolicy = operatingPolicy
@@ -50,6 +53,7 @@ public struct Application: Codable, Sendable, Equatable {
         case updatedAt = "updated_at"
         case archivedAt = "archived_at"
         case capabilities
+        case childrenPolicy = "children_policy"
         case secretKey = "secret_key"
         case relationship
         case operatingPolicy = "operating_policy"

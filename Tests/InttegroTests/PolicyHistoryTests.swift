@@ -57,15 +57,15 @@ final class PolicyHistoryTests: XCTestCase {
         }
     }
 
-    func testPolicyAgingSpecsExposePublicId() throws {
-        let childrenData = Data(#"{"public_id":"bt_aging_spec_immediate","t_plus":"0h"}"#.utf8)
-        let operatingData = Data(#"{"public_id":"bt_aging_spec_168_hourly","t_plus":"168h"}"#.utf8)
+    func testPolicyAgingSpecsExposeId() throws {
+        let childrenData = Data(#"{"id":"bt_aging_spec_immediate","t_plus":"0h"}"#.utf8)
+        let operatingData = Data(#"{"id":"bt_aging_spec_168_hourly","t_plus":"168h"}"#.utf8)
 
         let children = try JSONDecoder.inttegro.decode(ChildrenPolicyBTAgingSpec.self, from: childrenData)
         let operating = try JSONDecoder.inttegro.decode(OperatingPolicyBTAgingSpec.self, from: operatingData)
 
-        XCTAssertEqual(children.publicId, "bt_aging_spec_immediate")
-        XCTAssertEqual(operating.publicId, "bt_aging_spec_168_hourly")
+        XCTAssertEqual(children.id, "bt_aging_spec_immediate")
+        XCTAssertEqual(operating.id, "bt_aging_spec_168_hourly")
     }
 
     private func jsonObject<T: Encodable>(_ value: T) throws -> [String: Any] {
