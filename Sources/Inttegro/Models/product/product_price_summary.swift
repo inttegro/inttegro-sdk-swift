@@ -6,17 +6,24 @@ public struct ProductPriceSummary: Codable, Sendable, Equatable {
     public var id: String
     public var active: Bool
     public var label: String?
-    public var nominal: Amount
+    public var fixedAmount: Amount
 
     public init(
         id: String,
         active: Bool,
         label: String? = nil,
-        nominal: Amount
+        fixedAmount: Amount
     ) {
         self.id = id
         self.active = active
         self.label = label
-        self.nominal = nominal
+        self.fixedAmount = fixedAmount
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case active
+        case label
+        case fixedAmount = "fixed_amount"
     }
 }

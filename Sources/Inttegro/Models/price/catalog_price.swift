@@ -7,7 +7,7 @@ public struct CatalogPrice: Codable, Sendable, Equatable {
     public var label: String?
     public var about: String?
     public var active: Bool
-    public var nominal: Amount
+    public var fixedAmount: Amount
     public var productId: String?
     public var product: PriceEmbeddedProduct?
     public var createdAt: Date
@@ -19,7 +19,7 @@ public struct CatalogPrice: Codable, Sendable, Equatable {
         label: String? = nil,
         about: String? = nil,
         active: Bool,
-        nominal: Amount,
+        fixedAmount: Amount,
         productId: String? = nil,
         product: PriceEmbeddedProduct? = nil,
         createdAt: Date,
@@ -30,7 +30,7 @@ public struct CatalogPrice: Codable, Sendable, Equatable {
         self.label = label
         self.about = about
         self.active = active
-        self.nominal = nominal
+        self.fixedAmount = fixedAmount
         self.productId = productId
         self.product = product
         self.createdAt = createdAt
@@ -43,7 +43,7 @@ public struct CatalogPrice: Codable, Sendable, Equatable {
         case label
         case about
         case active
-        case nominal
+        case fixedAmount = "fixed_amount"
         case productId = "product_id"
         case product
         case createdAt = "created_at"
