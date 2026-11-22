@@ -3,15 +3,15 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct CreateOrderExistingCustomerInputRequestMeta: Codable, Sendable, Equatable {
-    public var idempotencyKey: String?
+  public var idempotencyKey: String?
 
-    public init(
-        idempotencyKey: String? = nil
-    ) {
-        self.idempotencyKey = idempotencyKey
-    }
+  public init(
+    idempotencyKey: String? = nil
+  ) {
+    self.idempotencyKey = idempotencyKey
+  }
 
-    private enum CodingKeys: String, CodingKey {
-        case idempotencyKey = "idempotency_key"
-    }
+  private enum CodingKeys: String, CodingKey {
+    case idempotencyKey = "idempotency_key"
+  }
 }

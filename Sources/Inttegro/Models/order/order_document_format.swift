@@ -3,11 +3,11 @@ import Foundation
 
 /// Typed Inttegro domain value.
 public struct OrderDocumentFormat: Codable, Sendable, Equatable {
-    public var url: String
+  public var url: String
 
-    public init(
-        url: String
-    ) {
-        self.url = url
-    }
+  public init(
+    url: String
+  ) {
+    self.url = url
+  }
 }

@@ -3,11 +3,11 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct ShippingInput: Codable, Sendable, Equatable {
-    public var address: AddressInput
+  public var address: AddressInput
 
-    public init(
-        address: AddressInput
-    ) {
-        self.address = address
-    }
+  public init(
+    address: AddressInput
+  ) {
+    self.address = address
+  }
 }

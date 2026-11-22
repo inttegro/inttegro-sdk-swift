@@ -2,14 +2,14 @@
 import Foundation
 
 public struct OrderDiscountLineItem: Codable, Sendable, Equatable {
-    public var type: String
-    public var discount: OrderDiscount
+  public var type: String
+  public var discount: OrderDiscount
 
-    public init(
-        type: String,
-        discount: OrderDiscount
-    ) {
-        self.type = type
-        self.discount = discount
-    }
+  public init(
+    type: String,
+    discount: OrderDiscount
+  ) {
+    self.type = type
+    self.discount = discount
+  }
 }

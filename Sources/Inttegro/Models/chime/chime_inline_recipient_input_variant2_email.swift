@@ -3,11 +3,11 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct ChimeInlineRecipientInputVariant2Email: Codable, Sendable, Equatable {
-    public var address: String
+  public var address: String
 
-    public init(
-        address: String
-    ) {
-        self.address = address
-    }
+  public init(
+    address: String
+  ) {
+    self.address = address
+  }
 }

@@ -3,14 +3,14 @@ import Foundation
 
 /// Typed Inttegro domain value.
 public struct OrderShippingLineItem: Codable, Sendable, Equatable {
-    public var type: String
-    public var shipping: OrderShippingLineItemShipping
+  public var type: String
+  public var shipping: OrderShippingLineItemShipping
 
-    public init(
-        type: String,
-        shipping: OrderShippingLineItemShipping
-    ) {
-        self.type = type
-        self.shipping = shipping
-    }
+  public init(
+    type: String,
+    shipping: OrderShippingLineItemShipping
+  ) {
+    self.type = type
+    self.shipping = shipping
+  }
 }

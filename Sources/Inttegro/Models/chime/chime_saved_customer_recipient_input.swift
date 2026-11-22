@@ -3,19 +3,19 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct ChimeSavedCustomerRecipientInput: Codable, Sendable, Equatable {
-    public var customerId: String
-    public var transport: ChimeTransport
+  public var customerId: String
+  public var transport: ChimeTransport
 
-    public init(
-        customerId: String,
-        transport: ChimeTransport
-    ) {
-        self.customerId = customerId
-        self.transport = transport
-    }
+  public init(
+    customerId: String,
+    transport: ChimeTransport
+  ) {
+    self.customerId = customerId
+    self.transport = transport
+  }
 
-    private enum CodingKeys: String, CodingKey {
-        case customerId = "customer_id"
-        case transport
-    }
+  private enum CodingKeys: String, CodingKey {
+    case customerId = "customer_id"
+    case transport
+  }
 }

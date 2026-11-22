@@ -3,15 +3,15 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct LookupScheduleRequest: Codable, Sendable, Equatable {
-    public var scheduleId: String
+  public var scheduleId: String
 
-    public init(
-        scheduleId: String
-    ) {
-        self.scheduleId = scheduleId
-    }
+  public init(
+    scheduleId: String
+  ) {
+    self.scheduleId = scheduleId
+  }
 
-    private enum CodingKeys: String, CodingKey {
-        case scheduleId = "schedule_id"
-    }
+  private enum CodingKeys: String, CodingKey {
+    case scheduleId = "schedule_id"
+  }
 }

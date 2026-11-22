@@ -3,19 +3,19 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct UpdateOrderRequestPaymentMethodDataMobileMoney: Codable, Sendable, Equatable {
-    public var network: MobileMoneyNetwork
-    public var accountNumber: String
+  public var network: MobileMoneyNetwork
+  public var accountNumber: String
 
-    public init(
-        network: MobileMoneyNetwork,
-        accountNumber: String
-    ) {
-        self.network = network
-        self.accountNumber = accountNumber
-    }
+  public init(
+    network: MobileMoneyNetwork,
+    accountNumber: String
+  ) {
+    self.network = network
+    self.accountNumber = accountNumber
+  }
 
-    private enum CodingKeys: String, CodingKey {
-        case network
-        case accountNumber = "account_number"
-    }
+  private enum CodingKeys: String, CodingKey {
+    case network
+    case accountNumber = "account_number"
+  }
 }

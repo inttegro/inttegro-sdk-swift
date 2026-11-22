@@ -3,59 +3,59 @@ import Foundation
 
 /// Typed Inttegro domain value.
 public struct Application: Codable, Sendable, Equatable {
-    public var id: String
-    public var name: String
-    public var alias: String?
-    public var description: String?
-    public var createdAt: Date
-    public var updatedAt: Date?
-    public var archivedAt: Date?
-    public var capabilities: [String: JSONValue]
-    public var childrenPolicy: ChildrenPolicy?
-    public var secretKey: ApplicationSecretKey?
-    public var relationship: ApplicationRelationship?
-    public var operatingPolicy: ApplicationOperatingPolicy?
+  public var id: String
+  public var name: String
+  public var alias: String?
+  public var description: String?
+  public var createdAt: Date
+  public var updatedAt: Date?
+  public var archivedAt: Date?
+  public var capabilities: ApplicationCapabilityProjection
+  public var childrenPolicy: ChildrenPolicy?
+  public var secretKey: ApplicationSecretKey?
+  public var relationship: ApplicationRelationship?
+  public var operatingPolicy: ApplicationOperatingPolicy?
 
-    public init(
-        id: String,
-        name: String,
-        alias: String? = nil,
-        description: String? = nil,
-        createdAt: Date,
-        updatedAt: Date? = nil,
-        archivedAt: Date? = nil,
-        capabilities: [String: JSONValue],
-        childrenPolicy: ChildrenPolicy? = nil,
-        secretKey: ApplicationSecretKey? = nil,
-        relationship: ApplicationRelationship? = nil,
-        operatingPolicy: ApplicationOperatingPolicy? = nil
-    ) {
-        self.id = id
-        self.name = name
-        self.alias = alias
-        self.description = description
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-        self.archivedAt = archivedAt
-        self.capabilities = capabilities
-        self.childrenPolicy = childrenPolicy
-        self.secretKey = secretKey
-        self.relationship = relationship
-        self.operatingPolicy = operatingPolicy
-    }
+  public init(
+    id: String,
+    name: String,
+    alias: String? = nil,
+    description: String? = nil,
+    createdAt: Date,
+    updatedAt: Date? = nil,
+    archivedAt: Date? = nil,
+    capabilities: ApplicationCapabilityProjection,
+    childrenPolicy: ChildrenPolicy? = nil,
+    secretKey: ApplicationSecretKey? = nil,
+    relationship: ApplicationRelationship? = nil,
+    operatingPolicy: ApplicationOperatingPolicy? = nil
+  ) {
+    self.id = id
+    self.name = name
+    self.alias = alias
+    self.description = description
+    self.createdAt = createdAt
+    self.updatedAt = updatedAt
+    self.archivedAt = archivedAt
+    self.capabilities = capabilities
+    self.childrenPolicy = childrenPolicy
+    self.secretKey = secretKey
+    self.relationship = relationship
+    self.operatingPolicy = operatingPolicy
+  }
 
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case alias
-        case description
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case archivedAt = "archived_at"
-        case capabilities
-        case childrenPolicy = "children_policy"
-        case secretKey = "secret_key"
-        case relationship
-        case operatingPolicy = "operating_policy"
-    }
+  private enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case alias
+    case description
+    case createdAt = "created_at"
+    case updatedAt = "updated_at"
+    case archivedAt = "archived_at"
+    case capabilities
+    case childrenPolicy = "children_policy"
+    case secretKey = "secret_key"
+    case relationship
+    case operatingPolicy = "operating_policy"
+  }
 }

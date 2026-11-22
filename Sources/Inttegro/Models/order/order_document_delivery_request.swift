@@ -3,15 +3,15 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct OrderDocumentDeliveryRequest: Codable, Sendable, Equatable {
-    public var orderId: String
+  public var orderId: String
 
-    public init(
-        orderId: String
-    ) {
-        self.orderId = orderId
-    }
+  public init(
+    orderId: String
+  ) {
+    self.orderId = orderId
+  }
 
-    private enum CodingKeys: String, CodingKey {
-        case orderId = "order_id"
-    }
+  private enum CodingKeys: String, CodingKey {
+    case orderId = "order_id"
+  }
 }

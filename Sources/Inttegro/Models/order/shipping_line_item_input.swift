@@ -3,14 +3,14 @@ import Foundation
 
 /// Typed Inttegro request parameters.
 public struct ShippingLineItemInput: Codable, Sendable, Equatable {
-    public var type: LineItemType
-    public var shipping: ShippingDetailsInput
+  public var type: LineItemType
+  public var shipping: ShippingDetailsInput
 
-    public init(
-        type: LineItemType,
-        shipping: ShippingDetailsInput
-    ) {
-        self.type = type
-        self.shipping = shipping
-    }
+  public init(
+    type: LineItemType,
+    shipping: ShippingDetailsInput
+  ) {
+    self.type = type
+    self.shipping = shipping
+  }
 }
