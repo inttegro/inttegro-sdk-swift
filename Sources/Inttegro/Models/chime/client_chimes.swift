@@ -33,6 +33,13 @@ public struct Chimes: Sendable {
       operation: "chimes.page", field: "page", authenticated: true)
   }
 
+  /// Retrieve effective, non-secret Chime delivery settings.
+  public func settings(options: RequestOptions = .init()) async throws -> ChimeSettings {
+    try await client.request(
+      method: "POST", path: "/chimes/settings", body: EmptyBody(), options: options,
+      operation: "chimes.settings", field: "settings", authenticated: true)
+  }
+
   /// Schedule Chimes
   public func schedule(_ request: ScheduleChimeRequest, options: RequestOptions = .init())
     async throws -> ScheduleCreationDetail
